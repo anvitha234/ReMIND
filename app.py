@@ -8,6 +8,11 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 app = Flask(__name__)
 
+def addlocationdata(data, id1):
+    db.collection('patient').document(id1).update({
+        'latitude': data['latitude'],
+        'longitude': data['longitude']
+    })
 def addpatientdata(data, id1):
     db.collection('patient').document(id1).set(data)
 
@@ -275,5 +280,18 @@ def updatepatientdata():
 
     return render_template("editpatient.html")
 
+
+@app.route("/update-location", methods=['POST'])
+def update_location():
+    if request.method == "POST":
+        id1 = request.form["id1"]
+        latitude = request.form["latitude"]
+        longitude = request.form["longitude"]
+
+        # Update the patient's location data
+        data = {'latitude': latitude, 'longitude': longitude}
+        addlocationdata(data, id1)
+
+        return render_template("index.html", message="Location updated successfully!")
 if __name__ == '__main__':
     app.run(debug=True)

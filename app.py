@@ -275,5 +275,18 @@ def updatepatientdata():
 
     return render_template("editpatient.html")
 
+
+@app.route("/update-location", methods=['POST'])
+def update_location():
+    if request.method == "POST":
+        id1 = request.form["id1"]
+        latitude = request.form["latitude"]
+        longitude = request.form["longitude"]
+
+        # Update the patient's location data
+        data = {'latitude': latitude, 'longitude': longitude}
+        addlocationdata(data, id1)
+
+        return render_template("index.html", message="Location updated successfully!")
 if __name__ == '__main__':
     app.run(debug=True)

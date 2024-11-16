@@ -8,6 +8,11 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 app = Flask(__name__)
 
+def addlocationdata(data, id1):
+    db.collection('patient').document(id1).update({
+        'latitude': data['latitude'],
+        'longitude': data['longitude']
+    })
 def addpatientdata(data, id1):
     db.collection('patient').document(id1).set(data)
 
